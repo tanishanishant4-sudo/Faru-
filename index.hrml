@@ -1,0 +1,292 @@
+import React, { useMemo, useState } from "react"; import { motion, AnimatePresence } from "framer-motion"; import { Heart, Flower2, ChevronRight, Sparkles, Camera, Gift } from "lucide-react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button";
+
+const photoFrames = [ { src: "/faru1.jpg", alt: "Tanu and Faru selfie together", caption: "My Faru and me forever 💗", rotate: "-rotate-2", }, { src: "/faru2.jpg", alt: "Cute mirror selfie together", caption: "Pretty girls, prettier bond 😌✨", rotate: "rotate-2", }, { src: "/faru3.jpg", alt: "Besties posing together", caption: "Us = soft chaos and love 🎀", rotate: "-rotate-1", }, { src: "/faru4.jpg", alt: "Sweet memory together", caption: "Every moment with you = favorite memory 🌊🌸", rotate: "rotate-1", }, ];
+
+const floatingEmojis = ["🧸", "🌸", "💗", "🎀", "🌷", "✨", "🫶"];
+
+function BackgroundDecor() { return ( <div className="pointer-events-none absolute inset-0 overflow-hidden"> <div className="absolute -top-16 -left-10 h-56 w-56 rounded-full bg-pink-200/40 blur-3xl" /> <div className="absolute top-1/3 -right-10 h-72 w-72 rounded-full bg-rose-200/40 blur-3xl" /> <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-fuchsia-100/50 blur-3xl" />
+
+{floatingEmojis.map((emoji, i) => (
+    <motion.div
+      key={i}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 0.55, y: [0, -12, 0] }}
+      transition={{
+        duration: 4 + i,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: i * 0.2,
+      }}
+      className="absolute text-2xl md:text-3xl"
+      style={{
+        left: `${8 + i * 12}%`,
+        top: `${10 + (i % 4) * 18}%`,
+      }}
+    >
+      {emoji}
+    </motion.div>
+  ))}
+</div>
+
+); }
+
+function PageWrapper({ children }) { return ( <motion.div initial={{ opacity: 0, y: 24, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -24, scale: 0.98 }} transition={{ duration: 0.55, ease: "easeOut" }} className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-rose-50 via-pink-50 to-fuchsia-50 text-rose-900" > <BackgroundDecor /> <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-4 py-10 md:px-8"> {children} </div> </motion.div> ); }
+
+export default function BestieMemoryWebsite() { const [page, setPage] = useState(0);
+
+const progress = useMemo(() => ((page + 1) / 4) * 100, [page]);
+
+const nextPage = () => setPage((p) => Math.min(p + 1, 3)); const prevPage = () => setPage((p) => Math.max(p - 1, 0));
+
+return ( <div className="min-h-screen bg-rose-50"> <div className="fixed left-1/2 top-4 z-50 w-[90%] max-w-md -translate-x-1/2 rounded-full border border-white/70 bg-white/70 p-2 shadow-lg backdrop-blur"> <div className="mb-1 flex items-center justify-between px-2 text-xs font-medium text-rose-700"> <span>Bestie Memories</span> <span>Page {page + 1} / 4</span> </div> <div className="h-2 w-full overflow-hidden rounded-full bg-rose-100"> <motion.div className="h-full rounded-full bg-gradient-to-r from-pink-400 to-rose-400" animate={{ width: ${progress}% }} transition={{ duration: 0.4 }} /> </div> </div>
+
+<AnimatePresence mode="wait">
+    {page === 0 && (
+      <PageWrapper key="page-1">
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-4xl"
+        >
+          <Card className="rounded-[2rem] border-0 bg-white/75 shadow-2xl backdrop-blur-xl">
+            <CardContent className="p-8 text-center md:p-14">
+              <div className="mb-6 flex items-center justify-center gap-3 text-rose-500">
+                <Heart className="h-7 w-7 fill-current" />
+                <Sparkles className="h-7 w-7" />
+                <Flower2 className="h-7 w-7" />
+              </div>
+
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.35em] text-rose-500">
+                For my Faru 💗
+              </p>
+
+              <h1 className="mx-auto max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
+                “Some people walk into your life and quietly become
+                <span className="bg-gradient-to-r from-pink-500 via-rose-500 to-fuchsia-500 bg-clip-text text-transparent">
+                  {" "}home.
+                </span>”
+              </h1>
+
+              <p className="mx-auto mt-8 max-w-2xl text-base leading-8 text-rose-800/80 md:text-xl">
+                Faru, you are my comfort person, my chaos partner, my safe place,
+                and one of the sweetest blessings life ever gave me.
+              </p>
+
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }} className="mt-10">
+                <Button
+                  onClick={nextPage}
+                  className="rounded-full bg-gradient-to-r from-pink-500 to-rose-500 px-8 py-6 text-base shadow-xl hover:opacity-95"
+                >
+                  click here beautiful <ChevronRight className="ml-2 h-5 w-5" />
+                </Button>
+              </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </PageWrapper>
+    )}
+
+    {page === 1 && (
+      <PageWrapper key="page-2">
+        <div className="mb-8 text-center">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.35em] text-rose-500">
+            Our memories
+          </p>
+          <h2 className="text-4xl font-bold md:text-5xl">
+            Little moments, forever favorites 💞
+          </h2>
+        </div>
+
+        <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+          {photoFrames.map((photo, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -8, rotate: 0, scale: 1.02 }}
+              className={photo.rotate}
+            >
+              <Card className="overflow-hidden rounded-[2rem] border-2 border-pink-100 bg-white/80 shadow-xl backdrop-blur">
+                <CardContent className="p-4">
+                  <div className="rounded-[1.5rem] border-4 border-rose-100 bg-white p-2 shadow-inner">
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      className="h-80 w-full rounded-[1rem] object-cover"
+                    />
+                  </div>
+                  <p className="mt-4 text-center text-sm font-medium text-rose-700">
+                    {photo.caption}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-10 flex gap-3">
+          <Button
+            variant="outline"
+            onClick={prevPage}
+            className="rounded-full border-rose-200 bg-white/70 px-6"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={nextPage}
+            className="rounded-full bg-gradient-to-r from-pink-500 to-rose-500 px-6"
+          >
+            Next page <Camera className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      </PageWrapper>
+    )}
+
+    {page === 2 && (
+      <PageWrapper key="page-3">
+        <div className="w-full max-w-4xl">
+          <Card className="rounded-[2rem] border-0 bg-white/80 shadow-2xl backdrop-blur-xl">
+            <CardContent className="p-8 md:p-12">
+              <p className="mb-3 text-center text-sm font-semibold uppercase tracking-[0.35em] text-rose-500">
+                A little letter for you
+              </p>
+
+              <h2 className="mb-8 text-center text-4xl font-bold md:text-5xl">
+                Thank you for being you 🌷
+              </h2>
+
+              <div className="space-y-6 text-base leading-8 text-rose-900/85 md:text-lg">
+                <p>
+                  Thank you for being one of the most beautiful parts of my life.
+                  Thank you for every laugh, every random conversation, every silly selfie,
+                  every little memory, and every moment where you made life feel lighter
+                  just by being in it. Even though it has only been one year, it genuinely
+                  feels like you became such a huge and irreplaceable part of my heart in
+                  the most beautiful way.
+                </p>
+
+                <p>
+                  Faru, I don’t think you fully realize how much you mean to me.
+                  You have loved me in ways that feel so soft, so safe, and so real.
+                  You’ve been with me through everything — the happy days, the weird days,
+                  the emotional days, and even the completely random chaotic ones.
+                  And through all of it, you stayed. That means more to me than I can ever explain.
+                </p>
+
+                <p>
+                  What I love most about you is how loving you are, how naturally you make me
+                  feel cared for, and how every moment with you somehow becomes my favorite memory.
+                  Thank you for everything, for being with me, for understanding me, for making me smile,
+                  and for being my baby, my safe place, and my forever bestie.
+                </p>
+
+                <p>
+                  I just want you to always remember this: I love you mera bbg.
+                  I’ll always be with you no matter what. No matter where life takes us,
+                  no matter what changes, and no matter how messy things get —
+                  you will always have a very special place in my heart.
+                </p>
+
+                <p className="font-semibold text-rose-600">
+                  Forever and always, <br />— Tanu 💗
+                </p>
+              </div>
+
+              <div className="mt-10 flex justify-center gap-3">
+                <Button
+                  variant="outline"
+                  onClick={prevPage}
+                  className="rounded-full border-rose-200 bg-white/70 px-6"
+                >
+                  Back
+                </Button>
+                <Button
+                  onClick={nextPage}
+                  className="rounded-full bg-gradient-to-r from-pink-500 to-rose-500 px-6"
+                >
+                  Last page <Gift className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </PageWrapper>
+    )}
+
+    {page === 3 && (
+      <PageWrapper key="page-4">
+        <div className="relative w-full max-w-5xl text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.7, type: "spring" }}
+            className="rounded-[2.5rem] border border-white/70 bg-white/75 px-6 py-14 shadow-2xl backdrop-blur-xl md:px-12"
+          >
+            <div className="mb-6 flex items-center justify-center gap-4 text-4xl md:text-5xl">
+              <span>🧸</span>
+              <span>🌸</span>
+              <span>🎀</span>
+              <span>🌷</span>
+              <span>🧸</span>
+            </div>
+
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.35em] text-rose-500">
+              Forever & always
+            </p>
+
+            <h2 className="text-5xl font-black leading-tight md:text-7xl">
+              I LOVE YOU
+              <span className="mt-2 block bg-gradient-to-r from-pink-500 via-rose-500 to-fuchsia-500 bg-clip-text text-transparent">
+                FARU BBG 💗
+              </span>
+            </h2>
+
+            <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-rose-800/80 md:text-2xl">
+              Thank you for being my teddy-bear-soft, flower-pretty, heart-healing best friend.
+            </p>
+
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-rose-700 md:text-xl">
+              I love you mera bbg, and I’ll always be with you no matter what. — Tanu 💗
+            </p>
+
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 text-4xl md:text-5xl">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <motion.span
+                  key={i}
+                  animate={{ y: [0, -8, 0], rotate: [0, 4, -4, 0] }}
+                  transition={{
+                    duration: 3 + i * 0.15,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  {i % 3 === 0 ? "🧸" : i % 3 === 1 ? "🌷" : "🌸"}
+                </motion.span>
+              ))}
+            </div>
+
+            <div className="mt-10 flex justify-center gap-3">
+              <Button
+                variant="outline"
+                onClick={prevPage}
+                className="rounded-full border-rose-200 bg-white/70 px-6"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={() => setPage(0)}
+                className="rounded-full bg-gradient-to-r from-pink-500 to-rose-500 px-6"
+              >
+                Replay magic ✨
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </PageWrapper>
+    )}
+  </AnimatePresence>
+</div>
+
+); }
